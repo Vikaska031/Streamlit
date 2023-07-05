@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+
 st.write("""
 # Исследование по чаевым
 
@@ -16,60 +17,66 @@ st.write(tips)
 
 # Гистограмма столбца 'total_bill'
 st.subheader('Гистограмма суммы счета')
-plt.hist(tips['total_bill'], bins=10)
-plt.xlabel('Total Bill')
-plt.ylabel('Frequency')
-plt.title('Histogram: Total Bill')
-st.pyplot()
+fig, ax = plt.subplots()
+ax.hist(tips['total_bill'], bins=10)
+ax.set_xlabel('Total Bill')
+ax.set_ylabel('Frequency')
+ax.set_title('Histogram: Total Bill')
+st.pyplot(fig)
 
 # Scatter plot: Total Bill vs Tip
 st.subheader('График зависимости суммы чаевых от суммы счета')
-plt.scatter(tips['total_bill'], tips['tip'])
-plt.xlabel('Total Bill')
-plt.ylabel('Tip')
-plt.title('Scatter Plot: Total Bill vs Tip')
-st.pyplot()
+fig, ax = plt.subplots()
+ax.scatter(tips['total_bill'], tips['tip'])
+ax.set_xlabel('Total Bill')
+ax.set_ylabel('Tip')
+ax.set_title('Scatter Plot: Total Bill vs Tip')
+st.pyplot(fig)
 
 # Scatter plot: Total Bill, Tip, and Size
 st.subheader('График зависимости суммы чаевых от размера компании')
-plt.scatter(tips['total_bill'], tips['tip'], c=tips['size'], cmap='bwr')
-plt.colorbar(label='Size')
-plt.xlabel('Total Bill')
-plt.ylabel('Tip')
-plt.title('Scatter Plot: Total Bill, Tip, and Size')
-st.pyplot()
+fig, ax = plt.subplots()
+scatter = ax.scatter(tips['total_bill'], tips['tip'], c=tips['size'], cmap='bwr')
+ax.colorbar(scatter, label='Size')
+ax.set_xlabel('Total Bill')
+ax.set_ylabel('Tip')
+ax.set_title('Scatter Plot: Total Bill, Tip, and Size')
+st.pyplot(fig)
 
 # Scatter plot: Tip vs Day
 st.subheader('График зависимости суммы чаевых от дня')
 sex_mapping = {'Female': 0, 'Male': 1}
 tips['sex_encoded'] = tips['sex'].map(sex_mapping)
-plt.scatter(tips['tip'], tips['day'], c=tips['sex_encoded'], cmap='bwr')
-plt.colorbar(label='Sex')
-plt.xlabel('Tip')
-plt.ylabel('Day')
-plt.title('Scatter Plot: Tip vs Day')
-plt.xticks(rotation=45, ha='right')
-st.pyplot()
+fig, ax = plt.subplots()
+scatter = ax.scatter(tips['tip'], tips['day'], c=tips['sex_encoded'], cmap='bwr')
+ax.colorbar(scatter, label='Sex')
+ax.set_xlabel('Tip')
+ax.set_ylabel('Day')
+ax.set_title('Scatter Plot: Tip vs Day')
+ax.set_xticks(rotation=45, ha='right')
+st.pyplot(fig)
 
 # Bar plot: Выручка по дням недели
 st.subheader('Выручка по дням недели')
-plt.bar(tips['day'], tips['total_bill'], color='c')
-plt.xlabel('Дни недели')
-plt.ylabel('Доход')
-plt.title('Выручка')
-plt.xticks(rotation=45)
-st.pyplot()
+fig, ax = plt.subplots()
+ax.bar(tips['day'], tips['total_bill'], color='c')
+ax.set_xlabel('Дни недели')
+ax.set_ylabel('Доход')
+ax.set_title('Выручка')
+ax.set_xticks(rotation=45)
+st.pyplot(fig)
 
 # Box plot: Total Bill by Day and Time
 st.subheader('Box Plot: Total Bill by Day and Time')
 grouped_data = tips.groupby(['day', 'time'])['total_bill'].sum().reset_index()
-plt.boxplot([grouped_data[grouped_data['time'] == 'Lunch']['total_bill'],
+fig, ax = plt.subplots()
+ax.boxplot([grouped_data[grouped_data['time'] == 'Lunch']['total_bill'],
              grouped_data[grouped_data['time'] == 'Dinner']['total_bill']],
             labels=['Lunch', 'Dinner'])
-plt.xlabel('Time')
-plt.ylabel('Total Bill')
-plt.title('Box Plot: Total Bill by Day and Time')
-st.pyplot()
+ax.set_xlabel('Time')
+ax.set_ylabel('Total Bill')
+ax.set_title('Box Plot: Total Bill by Day and Time')
+st.pyplot(fig)
 
 # Histograms: Lunch Tips and Dinner Tips
 st.subheader('Гистограммы чаевых на обед и ужин')
@@ -85,7 +92,7 @@ ax2.set_xlabel('Tip')
 ax2.set_ylabel('Frequency')
 ax2.set_title('Dinner Tips')
 plt.tight_layout()
-st.pyplot()
+st.pyplot(fig)
 
 # Scatter plots: Male and Female
 st.subheader('Scatter Plots: Male and Female')
@@ -107,4 +114,4 @@ ax2.set_ylabel('Tip')
 ax2.set_title('Scatterplot: Female')
 ax2.legend()
 plt.tight_layout()
-st.pyplot()
+st.pyplot(fig)
